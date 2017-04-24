@@ -1,6 +1,6 @@
-// Add font mixin
+// start: Add font mixin 
 
-=font-face($name, $path)
+=font-face( $name, $path )
 	
 	@font-face
 		font-family: $name
@@ -16,60 +16,64 @@
 
 			src: url('#{ $path }/#{ $name }.#{ $item }') format ('#{ $format }')
 
+// end 
 
-// Media queries mixin			
+// start: Media queries mixin			
 
-=m_min($min_screen)
-		@media only screen and (min-width: $min_screen)
-			@content
-=m_max($max_screen)
-		@media only screen and (min-width: $max_screen)
-			@content
-=m_minmax($min_screen,$max_screen)
-		@media only screen and (min-width: $min_screen) and (max-width: $max_screen - 1)
+=mq( $from, $until : 0 )
+
+	@if $from == 0
+	
+		@media only screen and ( max-width: $until )
 			@content
 
+	@else if $until == 0
+		
+		@media only screen and ( min-width: $from )
+			@content
 
-// Elements position
+	@else
+
+		@media only screen and ( min-width: $from ) and ( max-width: $until )
+			@content
+
+// end
+
+// start: Elements position
 
 =clr
 	overflow: hidden
 
-=float($side)
+=float( $side )
 
 	@if $side == 'left'
 		float: left
 	@else if $side == 'right'
-		float: right	 
+		float: right
+// end	 
 
+// start: Decoration properties
 
-// Decoration properties
-
-=font($font-family, $size, $color, $line-height: normal, $weight : normal, $style : normal)
+=font( $font-family, $size, $color, $line-height: normal, $weight : normal, $style : normal )
 
 	font-family: $font-family
 	font-size: $size
 	color: $color  
 	line-height: $line-height  
 	font-weight: $weight
-	font-style: $style  			
+	font-style: $style  
+	
+// end				
 
-=pseudo-elem
+// start: Animations
 
-	position: absolute
-	display: block
-	top: 0
-	left: 0
-	content: ''
-
-
-// Animation
-
-=transition($property, $duration, $timing-function, $delay : 0s)
+=transition( $property, $duration, $timing-function, $delay : 0s )
 
 	-webkit-transition: $property $duration $timing-function $delay 
 	-moz-transition: $property $duration $timing-function $delay 
 	-ms-transition: $property $duration $timing-function $delay 
 	-o-transition: $property $duration $timing-function $delay 
 	transition: $property $duration $timing-function $delay 
+
+// end
 

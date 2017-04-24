@@ -1,13 +1,17 @@
 var gulp = require('gulp'),
 	sass = require('gulp-sass'),
 	browserSync = require('browser-sync'),
-	autoprefixer = require('gulp-autoprefixer'),
-	imagemin = require('gulp-imagemin');
-	del = require('del');
+	imagemin = require('gulp-imagemin'),
+	del = require('del'),
+    nunjucksRender = require('gulp-nunjucks-render'),
+    fm = require('front-matter'),
+    data = require('gulp-data'),
+    postcss = require('gulp-postcss'),
+    autoprefixer = require('autoprefixer');
 
 var paths = {
 
-	html: ['./src/*.html'],
+	html: ['./src/templates/**/*.html'],
 	js: ['./src/js/**/*.js'],
 	sass: ['./src/sass/**/*.sass'],
 	css: ['./src/css/**/*.css'],
@@ -20,8 +24,22 @@ gulp.task('sass', function(){
 
 	return gulp.src(paths.sass)
 			.pipe(sass({outputStyle: 'expanded'}).on('error', sass.logError))
-			.pipe(autoprefixer(['last 15 versions', '> 1%', 'ie 8', 'ie 7'], { cascade: true }))
+            .pipe(postcss([autoprefixer()]))
     		.pipe(gulp.dest('./src/css/'));
+
+});
+
+gulp.task('render-html', function(){
+
+    return gulp.src('src/templates/*.html')
+        .pipe(data(function(file) {
+            var content = fm(String(file.contents));
+            file.contents = new Buffer(content.body);
+            return content.attributes;}))
+        .pipe(nunjucksRender({
+            path: 'src/templates/'
+        }))
+        .pipe(gulp.dest('src'));
 
 });
 
@@ -42,11 +60,12 @@ gulp.task('serve', function(){
     });
 
     
-    gulp.watch([paths.sass, paths.html], ['sass']).on('change', browserSync.reload);
+    gulp.watch([paths.sass], ['sass']).on('change', browserSync.reload);
+    gulp.watch([paths.html], ['render-html']).on('change', browserSync.reload);
 
 });
 
-gulp.task('default', ['sass','serve']);
+gulp.task('default', ['render-html', 'sass','serve']);
 
 gulp.task('clean', function(){
 
