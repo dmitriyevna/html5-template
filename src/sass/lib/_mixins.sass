@@ -47,26 +47,8 @@
 // start: Media queries mixin			
 
 =mq( $type )
-
-	@if $type == 'mobile'
-	
-		$size: $mobile
-		
-	@else if $type == 'tablet'
-	
-		$size: $tablet
-		
-	@else if $type == 'desktop'
-	
-		$size: $desktop
-	
-	@else if $type == 'desktopHD'
-	
-		$size: $desktopHD
-	
-	@media only screen and ( max-width: $size )
-			@content
-	
+  @media only screen and ( max-width: #{map-get($mq-breakpoints, $type)} )
+    @content
 
 // end //
 
