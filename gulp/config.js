@@ -19,9 +19,6 @@ var config = {
 	    fonts: destPath + '/fonts',
 	    img: destPath + '/img',
 	    svg: destPath + '/img/svg'
-	},
-	watch: {
-		js: devPath + '/js/**/*.js'
 	}
 
 };
