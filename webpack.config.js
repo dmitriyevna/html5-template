@@ -1,7 +1,7 @@
 module.exports = {
   watch: true,
-  entry: './src/js/modules/index.js',
+  entry: './src/js/components/index.js',
   output: {
-    filename: './src/js/bundle.js'
+    filename: './build/js/bundle.js'
   }  
 };
