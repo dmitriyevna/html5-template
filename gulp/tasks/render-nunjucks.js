@@ -1,8 +1,9 @@
+var config = require('../config.js');
+
 var gulp = require('gulp');
 var nunjucksRender = require('gulp-nunjucks-render');
 var fm = require('front-matter');
 var data = require('gulp-data');
-var config = require('../config.js');
 
 gulp.task('render-html', function(){
 

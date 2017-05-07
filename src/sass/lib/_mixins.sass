@@ -1,4 +1,6 @@
-// start: Add font mixin 
+// start: Font mixins //
+
+//Import font
 
 =font-face( $name, $path )
 	
@@ -16,43 +18,7 @@
 
 			src: url('#{ $path }/#{ $name }.#{ $item }') format ('#{ $format }')
 
-// end 
-
-// start: Media queries mixin			
-
-=mq( $from, $until : 0 )
-
-	@if $from == 0
-	
-		@media only screen and ( max-width: $until )
-			@content
-
-	@else if $until == 0
-		
-		@media only screen and ( min-width: $from )
-			@content
-
-	@else
-
-		@media only screen and ( min-width: $from ) and ( max-width: $until )
-			@content
-
-// end
-
-// start: Elements position
-
-=clr
-	overflow: hidden
-
-=float( $side )
-
-	@if $side == 'left'
-		float: left
-	@else if $side == 'right'
-		float: right
-// end	 
-
-// start: Decoration properties
+//Indicate font
 
 =font( $font-family, $size, $color, $line-height: normal, $weight : normal, $style : normal )
 
@@ -63,9 +29,56 @@
 	font-weight: $weight
 	font-style: $style  
 	
-// end				
+//CSS-lock
 
-// start: Animations
+=css-lock($max, $min, $max-width: 1600, $min-width: 320, $property: font-size)
+
+	#{$property}: $max + px
+	
+	#{$property}: calc(#{$min}px + (#{$max} - #{$min}) * ((100vw - #{$min-width}px) / (#{$max-width} - #{$min-width})))
+	
+	@media (max-width: #{$min-width}px)
+		#{$property}: $min + px
+	@media (min-width: #{$max-width}px)
+		#{$property}: $max + px
+
+// end //
+
+// start: Media queries mixin			
+
+=mq( $type )
+
+	@if $type == 'mobile'
+	
+		$size: $mobile
+		
+	@else if $type == 'tablet'
+	
+		$size: $tablet
+		
+	@else if $type == 'desktop'
+	
+		$size: $desktop
+	
+	@else if $type == 'desktopHD'
+	
+		$size: $desktopHD
+	
+	@media only screen and ( max-width: $size )
+			@content
+	
+
+// end //
+
+// start: Elements position //
+
+=fl
+	float: left
+=fr
+	float: right
+// end	 			
+
+// start: Animations //
 
 =transition( $property, $duration, $timing-function, $delay : 0s )
 
@@ -75,5 +88,5 @@
 	-o-transition: $property $duration $timing-function $delay 
 	transition: $property $duration $timing-function $delay 
 
-// end
+// end //
 
